@@ -14,9 +14,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     libpq-dev \
-    libicu-dev \
-    wkhtmltopdf \
-    wget
+    libicu-dev
 
 # Install Composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
