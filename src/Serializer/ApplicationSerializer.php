@@ -33,7 +33,6 @@ readonly class ApplicationSerializer implements SerializerInterface
 
     final public function serialize($data, string $format = 'json', array $context = []): string
     {
-        $context[AbstractObjectNormalizer::SKIP_NULL_VALUES] = true;
         return $this->serializer->serialize($data, $format, $context);
     }
 
