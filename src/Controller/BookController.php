@@ -6,13 +6,12 @@ use App\DTO\BookCreateInput;
 use App\DTO\BookOutput;
 use App\DTO\BookUpdateInput;
 use App\DTO\NewObjectOutput;
-use App\Entity\Book;
+use App\Exception\ValidationException;
 use App\Repository\BookRepository;
 use App\Serializer\ApplicationSerializer;
+use App\Service\BooksCrudService;
 use App\Service\Page;
 use App\Service\PaginatorService;
-use App\Transformer\BookOutputTransformer;
-use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,16 +19,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BookController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly BooksCrudService $booksCrudService,
         private readonly BookRepository $bookRepository,
-        private readonly PaginatorService $paginatorService,
-        private readonly BookOutputTransformer $outputTransformer,
-        private readonly ValidatorInterface $validator,
         private readonly ApplicationSerializer $serializer,
     ) {
     }
@@ -70,12 +65,7 @@ class BookController extends AbstractController
             $currentPage = $request->query->getInt('page', 1);
             $itemsPerPage = $request->query->getInt('itemsPerPage', PaginatorService::ITEMS_PER_PAGE);
 
-            $queryBuilder = $this->bookRepository->createQueryBuilder('b')
-                ->orderBy('b.title', 'ASC')
-                ->orderBy('b.publishedDate', 'DESC')
-                ->orderBy('b.uuid', 'ASC');
-
-            $paginatedData = $this->paginatorService->paginate($queryBuilder, $currentPage, $itemsPerPage, $this->outputTransformer);
+            $paginatedData = $this->booksCrudService->getMany($currentPage, $itemsPerPage);
 
             return $this->createJsonResponse($paginatedData);
         } catch (\InvalidArgumentException $e) {
@@ -99,13 +89,10 @@ class BookController extends AbstractController
     )]
     public function getOne(string $uuid): JsonResponse
     {
-        $result = $this->bookRepository->find($uuid);
-
-        if (!$result) {
+        $output = $this->booksCrudService->getOne($uuid);
+        if (null === $output) {
             throw $this->createNotFoundException();
         }
-
-        $output = $this->outputTransformer->transform($result);
 
         return $this->createJsonResponse($output);
     }
@@ -129,26 +116,23 @@ class BookController extends AbstractController
         description: 'Bad request',
         content: new OA\JsonContent()
     )]
-    public function create(Request $request): JsonResponse
+    public function create(Request $request): Response
     {
-        $content = $request->getContent();
-        $content = $this->serializer->deserialize($content, BookCreateInput::class, 'json');
-        $violations = $this->validator->validate($content);
-        if (\count($violations) > 0) {
-            return $this->json($violations, Response::HTTP_BAD_REQUEST);
+        $rawContent = $request->getContent();
+
+        if (!$rawContent) {
+            return new Response(status: Response::HTTP_BAD_REQUEST);
         }
 
-        $newBook = new Book();
+        $content = $this->serializer->deserialize($rawContent, BookCreateInput::class, 'json');
 
-        $newBook->isbn = $content->isbn;
-        $newBook->title = $content->title;
-        $newBook->author = $content->author;
-        $newBook->publishedDate = new \DateTimeImmutable($content->publishedDate);
+        try {
+            $newBook = $this->booksCrudService->create($content);
 
-        $this->entityManager->persist($newBook);
-        $this->entityManager->flush();
-
-        return $this->createJsonResponse(new NewObjectOutput($newBook->uuid), Response::HTTP_CREATED);
+            return $this->createJsonResponse(new NewObjectOutput($newBook->uuid), Response::HTTP_CREATED);
+        } catch (ValidationException $exception) {
+            return $this->json($exception->getErrors(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     #[Route('/books/{uuid}', name: 'books_delete', requirements: ['uuid' => '^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$'], methods: ['DELETE'])]
@@ -167,14 +151,9 @@ class BookController extends AbstractController
     )]
     public function delete(string $uuid): Response
     {
-        $book = $this->bookRepository->find($uuid);
-
-        if (!$book) {
+        if (!$this->booksCrudService->delete($uuid)) {
             throw $this->createNotFoundException();
         }
-
-        $this->entityManager->remove($book);
-        $this->entityManager->flush();
 
         return new Response(status: Response::HTTP_NO_CONTENT);
     }
@@ -211,29 +190,21 @@ class BookController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $content = $request->getContent();
-        $content = $this->serializer->deserialize($content, BookUpdateInput::class, 'json');
-        $violations = $this->validator->validate($content);
-        if (\count($violations) > 0) {
-            return $this->json($violations, Response::HTTP_BAD_REQUEST);
+        $rawContent = $request->getContent();
+
+        if (!$rawContent) {
+            return new Response(status: Response::HTTP_BAD_REQUEST);
         }
 
-        if (null !== $content->isbn) {
-            $book->isbn = $content->isbn;
-        }
-        if (null !== $content->title) {
-            $book->title = $content->title;
-        }
-        if (null !== $content->author) {
-            $book->author = $content->author;
-        }
-        if (null !== $content->publishedDate) {
-            $book->publishedDate = new \DateTimeImmutable($content->publishedDate);
-        }
+        $content = $this->serializer->deserialize($rawContent, BookUpdateInput::class, 'json');
 
-        $this->entityManager->flush();
+        try {
+            $this->booksCrudService->update($content, $book);
 
-        return new Response(status: Response::HTTP_OK);
+            return new Response(status: Response::HTTP_OK);
+        } catch (ValidationException $exception) {
+            return $this->json($exception->getErrors(), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     private function createJsonResponse(mixed $output, int $status = Response::HTTP_OK): JsonResponse
