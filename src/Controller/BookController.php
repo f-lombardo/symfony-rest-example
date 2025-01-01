@@ -81,14 +81,27 @@ class BookController extends AbstractController
         $newBook->isbn = $content->isbn;
         $newBook->title = $content->title;
         $newBook->author = $content->author;
-        if (null !== $content->publishedDate) {
-            $newBook->publishedDate = new \DateTimeImmutable($content->publishedDate);
-        }
+        $newBook->publishedDate = new \DateTimeImmutable($content->publishedDate);
 
         $this->entityManager->persist($newBook);
         $this->entityManager->flush();
 
         return $this->createJsonResponse(new NewObjectOutput($newBook->uuid), Response::HTTP_CREATED);
+    }
+
+    #[Route('/books/{uuid}', name: 'books_delete', requirements: ['uuid' => '^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$'], methods: ['DELETE'])]
+    public function delete(string $uuid): Response
+    {
+        $result = $this->bookRepository->find($uuid);
+
+        if (!$result) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->entityManager->remove($result);
+        $this->entityManager->flush();
+
+        return new Response(status: Response::HTTP_NO_CONTENT);
     }
 
     private function createJsonResponse(mixed $output, int $status = Response::HTTP_OK): JsonResponse

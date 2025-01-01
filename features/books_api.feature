@@ -180,3 +180,42 @@ Feature: In order to manage a collection of books
         publishedDate: This value is not a valid date
         """
         And table "book" should contain 5 records
+
+    Scenario: It can delete books
+        When a client sends a "DELETE" request to "/books/e8617343-1dfd-4e80-ab81-d53e06d30ae4"
+        Then the response HTTP status code should be 204
+        And table "book" should contain 4 records
+        When a client sends a "DELETE" request to "/books/8afeff05-af03-4ccd-922c-9d7c12cc2e28"
+        Then the response HTTP status code should be 204
+        And table "book" should contain 3 records
+        When a client sends a "DELETE" request to "/books/a9ab0eb5-1077-436a-bcf6-52f89e95757a"
+        Then the response HTTP status code should be 204
+        And table "book" should contain 2 records
+        When a client sends a "DELETE" request to "/books/bfcdead0-85f8-4939-bb14-b70c3d1364ce"
+        Then the response HTTP status code should be 204
+        And table "book" should contain 1 records
+        When a client sends a "GET" request to "/books"
+        Then the response HTTP status code should be 200
+        And the JSON response should match:
+        """json
+        {
+          "items": [
+            {
+              "uuid": "546dda5c-900f-4fd5-b382-c9a33571bb4c",
+              "title": "Decameron",
+              "author": "Giovanni Boccaccio",
+              "published_date": "2013-04-24",
+              "isbn": "978-8817063265"
+            }
+          ],
+          "total_items": 1,
+          "total_pages": 1,
+          "current_page": 1,
+          "items_per_page": 30
+        }
+        """
+
+    Scenario: It cannot delete non existent books
+        When a client sends a "DELETE" request to "/books/99999999-1dfd-4e80-ab81-d53e06d30ae4"
+        Then the response HTTP status code should be 404
+        And table "book" should contain 5 records
