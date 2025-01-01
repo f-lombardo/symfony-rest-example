@@ -1,0 +1,717 @@
+{
+  "item": [
+    {
+      "name": "books",
+      "description": "",
+      "item": [
+        {
+          "id": "f298b404-8bd5-437f-a941-aacf27430fd7",
+          "name": "List books",
+          "request": {
+            "name": "List books",
+            "description": {},
+            "url": {
+              "path": [
+                "books"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Page number for pagination",
+                    "type": "text/plain"
+                  },
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of items per page",
+                    "type": "text/plain"
+                  },
+                  "key": "itemsPerPage",
+                  "value": "30"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {},
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "27641ec8-5af0-40a5-8296-3f3eb3582de6",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "books"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Page number for pagination",
+                        "type": "text/plain"
+                      },
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of items per page",
+                        "type": "text/plain"
+                      },
+                      "key": "itemsPerPage",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"uuid\": \"<string>\",\n      \"title\": \"<string>\",\n      \"author\": \"<string>\",\n      \"published_date\": \"<string>\",\n      \"isbn\": \"<string>\"\n    },\n    {\n      \"uuid\": \"<string>\",\n      \"title\": \"<string>\",\n      \"author\": \"<string>\",\n      \"published_date\": \"<string>\",\n      \"isbn\": \"<string>\"\n    }\n  ],\n  \"total_items\": \"<integer>\",\n  \"total_pages\": \"<integer>\",\n  \"current_page\": \"<integer>\",\n  \"items_per_page\": \"<integer>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10e24540-cf54-435b-8cdc-a1db300d11e8",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "books"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Page number for pagination",
+                        "type": "text/plain"
+                      },
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of items per page",
+                        "type": "text/plain"
+                      },
+                      "key": "itemsPerPage",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [],
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "64f6a77a-3288-4970-b392-524b1dcb7174",
+          "name": "Create a new book",
+          "request": {
+            "name": "Create a new book",
+            "description": {},
+            "url": {
+              "path": [
+                "books"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<date>\",\n  \"isbn\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "72fe6ae0-dbb9-48a2-b29b-d4d2e50380ca",
+              "name": "Successfully created book",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "books"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<date>\",\n  \"isbn\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"uuid\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2549c0e-7494-49d7-8989-debfc670176b",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "books"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<date>\",\n  \"isbn\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "name": "{uuid}",
+          "description": "",
+          "item": [
+            {
+              "id": "811ab458-174e-4bdf-96d8-eb44bfb622c5",
+              "name": "Retrieve a book by UUID",
+              "request": {
+                "name": "Retrieve a book by UUID",
+                "description": {},
+                "url": {
+                  "path": [
+                    "books",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "3590a3e9-fc20-f2a4-e57b-a27191ac796c",
+                      "key": "uuid",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {},
+                "auth": null
+              },
+              "response": [
+                {
+                  "id": "54dee3e2-b3b8-4d52-9ffb-47698657e43d",
+                  "name": "Successful response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "books",
+                        ":uuid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"uuid\": \"<string>\",\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<string>\",\n  \"isbn\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "dd2cb755-7779-4b4e-972a-08bfce535fb5",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "books",
+                        ":uuid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [],
+                  "cookie": [],
+                  "_postman_previewlanguage": "text"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "id": "52d28748-5845-4242-a856-6248ceaee095",
+              "name": "Update a book by UUID",
+              "request": {
+                "name": "Update a book by UUID",
+                "description": {},
+                "url": {
+                  "path": [
+                    "books",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "3590a3e9-fc20-f2a4-e57b-a27191ac796c",
+                      "key": "uuid",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<string>\",\n  \"isbn\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "auth": null
+              },
+              "response": [
+                {
+                  "id": "f055e574-9fa5-4569-af9f-89347dbb33be",
+                  "name": "Successful update",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "books",
+                        ":uuid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<string>\",\n  \"isbn\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"uuid\": \"<string>\",\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<string>\",\n  \"isbn\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "987fd78d-b28e-4644-a2a0-4123627aaf97",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "books",
+                        ":uuid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<string>\",\n  \"isbn\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "header": [],
+                  "cookie": [],
+                  "_postman_previewlanguage": "text"
+                },
+                {
+                  "id": "65e137b3-6a8c-4b9b-9099-b148d51c5a1b",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "books",
+                        ":uuid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"title\": \"<string>\",\n  \"author\": \"<string>\",\n  \"published_date\": \"<string>\",\n  \"isbn\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [],
+                  "cookie": [],
+                  "_postman_previewlanguage": "text"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "id": "9f9e0484-d164-47dc-9243-7f6102c733bb",
+              "name": "Delete a book by UUID",
+              "request": {
+                "name": "Delete a book by UUID",
+                "description": {},
+                "url": {
+                  "path": [
+                    "books",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "3590a3e9-fc20-f2a4-e57b-a27191ac796c",
+                      "key": "uuid",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {},
+                "auth": null
+              },
+              "response": [
+                {
+                  "id": "26f842f2-8635-4df8-95ef-407fdabb6718",
+                  "name": "No content (book deleted successfully)",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "books",
+                        ":uuid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "id": "6254c1bd-79b3-42b4-b4f3-0e2887f89624",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "books",
+                        ":uuid"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [],
+                  "cookie": [],
+                  "_postman_previewlanguage": "text"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ],
+  "info": {
+    "_postman_id": "003dffa0-3ddf-481c-9ebf-539710f55bc3",
+    "name": "Books",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A CRUD REST API example handling books",
+      "type": "text/plain"
+    }
+  }
+}
