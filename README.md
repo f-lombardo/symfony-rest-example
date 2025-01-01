@@ -69,3 +69,11 @@ You can then use it with, for example, the online [Swagger Editor](https://edito
 
 In the [docs](docs) directory you can also find the [openapi json file](docs/openapi.json) alongside with
 a [postman collection](docs/postman-books.json).
+
+## Future improvements
+
+I'd like to add these features in the future:
+
+1. An example of deployments scripts for various cloud providers and/or for a Kubernetes environment
+2. A better handling of other connected entities, such as authors
+3. A better handling of multiple copies of the same book
