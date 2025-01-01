@@ -60,3 +60,12 @@ better [ATDD](https://en.wikipedia.org/wiki/Acceptance_test-driven_development))
 tests are more robust and efficient than unit tests,
 as I discussed in some presentation at Agile Day 2023 and at Crafted Software, but more on this for another time ;-)
 
+## OpenApi documentation
+
+Connect to [http://localhost:8099/api/openapi.json](http://localhost:8099/api/openapi.json) to get a JSON version of the
+OpenApi
+documentation of this API.
+You can then use it with, for example, the online [Swagger Editor](https://editor.swagger.io)
+
+In the [docs](docs) directory you can also find the [openapi json file](docs/openapi.json) alongside with
+a [postman collection](docs/postman-books.json).

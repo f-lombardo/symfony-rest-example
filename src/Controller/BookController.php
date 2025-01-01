@@ -3,14 +3,18 @@
 namespace App\Controller;
 
 use App\DTO\BookCreateInput;
+use App\DTO\BookOutput;
 use App\DTO\BookUpdateInput;
 use App\DTO\NewObjectOutput;
 use App\Entity\Book;
 use App\Repository\BookRepository;
 use App\Serializer\ApplicationSerializer;
+use App\Service\Page;
 use App\Service\PaginatorService;
 use App\Transformer\BookOutputTransformer;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +35,35 @@ class BookController extends AbstractController
     }
 
     #[Route('/books', name: 'books_get_many', methods: ['GET'])]
+    #[OA\Get(
+        summary: 'List books',
+        tags: ['Books']
+    )]
+    #[OA\Parameter(
+        name: 'page',
+        description: 'Page number for pagination',
+        in: 'query',
+        required: false,
+        schema: new OA\Schema(type: 'integer', default: 1)
+    )]
+    #[OA\Parameter(
+        name: 'itemsPerPage',
+        description: 'Number of items per page',
+        in: 'query',
+        required: false,
+        schema: new OA\Schema(type: 'integer', default: PaginatorService::ITEMS_PER_PAGE)
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful response',
+        content: new OA\JsonContent(
+            ref: new Model(type: Page::class)
+        )
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad request'
+    )]
     public function getMany(Request $request): JsonResponse
     {
         try {
@@ -51,6 +84,19 @@ class BookController extends AbstractController
     }
 
     #[Route('/books/{uuid}', name: 'books_get_one', requirements: ['uuid' => '^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$'], methods: ['GET'])]
+    #[OA\Get(
+        summary: 'Retrieve a book by UUID',
+        tags: ['Books']
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful response',
+        content: new OA\JsonContent(ref: new Model(type: BookOutput::class))
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Not found'
+    )]
     public function getOne(string $uuid): JsonResponse
     {
         $result = $this->bookRepository->find($uuid);
@@ -65,6 +111,24 @@ class BookController extends AbstractController
     }
 
     #[Route('/books', name: 'books_create', methods: ['POST'])]
+    #[OA\Post(
+        summary: 'Create a new book',
+        tags: ['Books']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(ref: new Model(type: BookCreateInput::class))
+    )]
+    #[OA\Response(
+        response: 201,
+        description: 'Successfully created book',
+        content: new OA\JsonContent(ref: new Model(type: NewObjectOutput::class))
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad request',
+        content: new OA\JsonContent()
+    )]
     public function create(Request $request): JsonResponse
     {
         $content = $request->getContent();
@@ -88,6 +152,19 @@ class BookController extends AbstractController
     }
 
     #[Route('/books/{uuid}', name: 'books_delete', requirements: ['uuid' => '^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$'], methods: ['DELETE'])]
+    #[OA\Delete(
+        summary: 'Delete a book by UUID',
+        tags: ['Books']
+    )]
+    #[OA\Response(
+        response: 204,
+        description: 'No content (book deleted successfully)',
+        content: new OA\JsonContent()
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Not found'
+    )]
     public function delete(string $uuid): Response
     {
         $book = $this->bookRepository->find($uuid);
@@ -103,6 +180,29 @@ class BookController extends AbstractController
     }
 
     #[Route('/books/{uuid}', name: 'books_update', requirements: ['uuid' => '^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$'], methods: ['PUT'])]
+    #[OA\Put(
+        summary: 'Update a book by UUID',
+        tags: ['Books']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            ref: new Model(type: BookUpdateInput::class)
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful update',
+        content: new OA\JsonContent(ref: new Model(type: BookOutput::class))
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad request'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Not found'
+    )]
     public function update(Request $request, string $uuid): Response
     {
         $book = $this->bookRepository->find($uuid);

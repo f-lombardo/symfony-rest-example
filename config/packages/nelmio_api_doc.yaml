@@ -1,0 +1,9 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: Books
+      description: A CRUD REST API example handling books
+      version: 1.0.0
+  areas: # to filter documented areas
+    path_patterns:
+      - ^/books # Accepts routes under /api except /api/doc

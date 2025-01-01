@@ -177,7 +177,7 @@ Feature: In order to manage a collection of books
     Then the response HTTP status code should be 400
     And the response should contain text:
         """
-        publishedDate: This value is not a valid date
+        published_date: This value is not a valid date
         """
     And table "book" should contain 5 records
 
@@ -254,7 +254,7 @@ Feature: In order to manage a collection of books
     Then the response HTTP status code should be 400
     And the response should contain text:
         """
-        publishedDate: This value is not a valid date
+        published_date: This value is not a valid date
         """
 
   Scenario: It cannot update a non existing book
