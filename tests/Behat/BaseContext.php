@@ -56,7 +56,7 @@ final class BaseContext implements Context
      */
     public function theResponseShouldBeReceived(): void
     {
-        if ($this->response === null) {
+        if (null === $this->response) {
             throw new \RuntimeException('No response received');
         }
     }
@@ -112,7 +112,6 @@ final class BaseContext implements Context
         Assert::assertEquals($expectedNrOfRecords, $actualNrOfRecords, "Table $tableName has $actualNrOfRecords records while it should contain $expectedNrOfRecords records");
     }
 
-
     /**
      * @Then the JSON response should match:
      *
@@ -146,7 +145,7 @@ final class BaseContext implements Context
         }
         if (!\str_contains($content, $needle->getRaw())) {
             throw new \RuntimeException('Response does not contain '.$needle->getRaw().' Received: '.$content);
-        };
+        }
     }
 
     /**

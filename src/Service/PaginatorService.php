@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Transformer\Transformer;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Traversable;
 
 class PaginatorService
 {
@@ -15,6 +14,7 @@ class PaginatorService
     /**
      * @template T
      * @template Q
+     *
      * @param Transformer<T, Q>|null $transformer
      */
     public function paginate(QueryBuilder $queryBuilder, int $currentPage = 1, int $itemsPerPage = self::ITEMS_PER_PAGE, ?Transformer $transformer = null): Page
@@ -52,7 +52,7 @@ class PaginatorService
         }
 
         if ($itemsPerPage < 1 || $itemsPerPage > self::MAX_ITEMS_PER_PAGE) {
-            throw new \InvalidArgumentException('Max items must be greater than 1 and less than or equal to ' . self::MAX_ITEMS_PER_PAGE);
+            throw new \InvalidArgumentException('Max items must be greater than 1 and less than or equal to '.self::MAX_ITEMS_PER_PAGE);
         }
     }
 }

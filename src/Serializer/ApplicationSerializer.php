@@ -24,7 +24,7 @@ readonly class ApplicationSerializer implements SerializerInterface
                 new ObjectNormalizer(nameConverter: new CamelCaseToSnakeCaseNameConverter(), defaultContext: [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]),
             ],
             [
-                new JsonEncoder()
+                new JsonEncoder(),
             ]
         );
     }

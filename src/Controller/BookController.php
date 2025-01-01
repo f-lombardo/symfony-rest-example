@@ -16,11 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use function count;
 
 class BookController extends AbstractController
 {
-
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly BookRepository $bookRepository,
@@ -28,8 +26,7 @@ class BookController extends AbstractController
         private readonly BookOutputTransformer $outputTransformer,
         private readonly ValidatorInterface $validator,
         private readonly ApplicationSerializer $serializer,
-    )
-    {
+    ) {
     }
 
     #[Route('/books', name: 'books_get_many', methods: ['GET'])]
@@ -48,7 +45,7 @@ class BookController extends AbstractController
 
             return $this->createJsonResponse($paginatedData);
         } catch (\InvalidArgumentException $e) {
-           return $this->json($e->getMessage(), Response::HTTP_BAD_REQUEST);
+            return $this->json($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -72,7 +69,7 @@ class BookController extends AbstractController
         $content = $request->getContent();
         $content = $this->serializer->deserialize($content, BookCreateInput::class, 'json');
         $violations = $this->validator->validate($content);
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             return $this->json($violations, Response::HTTP_BAD_REQUEST);
         }
 

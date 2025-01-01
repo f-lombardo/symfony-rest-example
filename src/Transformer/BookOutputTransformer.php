@@ -10,10 +10,8 @@ use App\Entity\Book;
  */
 class BookOutputTransformer implements Transformer
 {
-
     /**
      * @param Book $data
-     * @return BookOutput
      */
     public function transform($data): BookOutput
     {
