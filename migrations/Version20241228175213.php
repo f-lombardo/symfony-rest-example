@@ -16,7 +16,7 @@ final class Version20241228175213 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE book (uuid UUID NOT NULL, title TEXT NOT NULL, author TEXT NOT NULL, published_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, isbn VARCHAR(17) DEFAULT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('CREATE TABLE book (uuid UUID NOT NULL, title TEXT NOT NULL, author TEXT NOT NULL, published_date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, isbn VARCHAR(17) NOT NULL, PRIMARY KEY(uuid))');
         $this->addSql('COMMENT ON COLUMN book.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN book.published_date IS \'(DC2Type:datetime_immutable)\'');
     }

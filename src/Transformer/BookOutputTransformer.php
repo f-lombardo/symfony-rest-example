@@ -23,7 +23,7 @@ class BookOutputTransformer implements Transformer
         $result->author = $data->author;
         $result->title = $data->title;
         $result->isbn = $data->isbn;
-        $result->publishedDate = $data->publishedDate?->format('Y-m-d');
+        $result->publishedDate = $data->publishedDate->format('Y-m-d');
 
         return $result;
     }

@@ -11,14 +11,14 @@ use Symfony\Component\Uid\Uuid;
 class Book
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid')]
+    #[ORM\Column(type: 'uuid', nullable: false)]
     public Uuid $uuid {
         get {
             return $this->uuid;
         }
     }
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
     public string $title {
         get {
             return $this->title;
@@ -28,7 +28,7 @@ class Book
         }
     }
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
     public string $author {
         get {
             return $this->author;
@@ -38,8 +38,8 @@ class Book
         }
     }
 
-    #[ORM\Column(nullable: true)]
-    public ?\DateTimeImmutable $publishedDate = null {
+    #[ORM\Column(nullable: false)]
+    public \DateTimeImmutable $publishedDate {
         get {
             return $this->publishedDate;
         }
@@ -48,8 +48,8 @@ class Book
         }
     }
 
-    #[ORM\Column(length: 17, nullable: true)]
-    public ?string $isbn = null {
+    #[ORM\Column(length: 17, nullable: false)]
+    public string $isbn {
         get {
             return $this->isbn;
         }

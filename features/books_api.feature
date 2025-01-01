@@ -147,3 +147,36 @@ Feature: In order to manage a collection of books
         }
         """
         And table "book" should contain 6 records
+
+    Scenario: It checks missing data before creating a new book
+        When a client sends a "POST" JSON request to "/books" with body:
+        """JSON
+        {
+          "title": "The Black Swan",
+          "published_date": "2010-05-11",
+          "isbn": "978-0812973815"
+        }
+        """
+        Then the response HTTP status code should be 400
+        And the response should contain text:
+        """
+        author: This value should not be blank
+        """
+        And table "book" should contain 5 records
+
+    Scenario: It checks wrong publishing date before creating a new book
+        When a client sends a "POST" JSON request to "/books" with body:
+        """JSON
+        {
+          "title": "The Black Swan",
+          "author": "Nassim Nicholas Taleb",
+          "published_date": "2010-45-51",
+          "isbn": "978-0812973815"
+        }
+        """
+        Then the response HTTP status code should be 400
+        And the response should contain text:
+        """
+        publishedDate: This value is not a valid date
+        """
+        And table "book" should contain 5 records

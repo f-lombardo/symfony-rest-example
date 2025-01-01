@@ -136,6 +136,20 @@ final class BaseContext implements Context
     }
 
     /**
+     * @Then the response should contain text:
+     */
+    public function responseShouldContain(PyStringNode $needle): void
+    {
+        $content = $this->response?->getContent();
+        if (!$content) {
+            throw new \RuntimeException('No response received');
+        }
+        if (!\str_contains($content, $needle->getRaw())) {
+            throw new \RuntimeException('Response does not contain '.$needle->getRaw().' Received: '.$content);
+        };
+    }
+
+    /**
      * @Then the response HTTP status code should be :code
      */
     public function theResponseHTTPStatusCodeShouldBe(int $expectedStatusCode): void
