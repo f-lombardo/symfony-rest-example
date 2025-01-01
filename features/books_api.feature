@@ -16,7 +16,7 @@ Feature: In order to manage a collection of books
     When a client sends a "GET" request to "/books"
     Then the response HTTP status code should be 200
     And the JSON response should match:
-        """json
+        """JSON
         {
           "items": [
             {
@@ -66,7 +66,7 @@ Feature: In order to manage a collection of books
     When a client sends a "GET" request to "/books?page=2&itemsPerPage=2"
     Then the response HTTP status code should be 200
     And the JSON response should match:
-        """json
+        """JSON
         {
           "items": [
             {
@@ -95,7 +95,7 @@ Feature: In order to manage a collection of books
     When a client sends a "GET" request to "/books?itemsPerPage=-2"
     Then the response HTTP status code should be 400
     And the JSON response should match:
-        """json
+        """JSON
         "Max items must be greater than 1 and less than or equal to 100"
         """
 
@@ -103,7 +103,7 @@ Feature: In order to manage a collection of books
     When a client sends a "GET" request to "/books?page=-4"
     Then the response HTTP status code should be 400
     And the JSON response should match:
-        """json
+        """JSON
         "Current page must be greater than 0"
         """
 
@@ -111,7 +111,7 @@ Feature: In order to manage a collection of books
     When a client sends a "GET" request to "/books/8afeff05-af03-4ccd-922c-9d7c12cc2e28"
     Then the response HTTP status code should be 200
     And the JSON response should match:
-        """json
+        """JSON
         {
           "uuid": "8afeff05-af03-4ccd-922c-9d7c12cc2e28",
           "title": "The Histories",
@@ -141,7 +141,7 @@ Feature: In order to manage a collection of books
         """
     Then the response HTTP status code should be 201
     And the JSON response should match:
-        """json
+        """JSON
         {
             "uuid": "@uuid@"
         }
@@ -197,7 +197,7 @@ Feature: In order to manage a collection of books
     When a client sends a "GET" request to "/books"
     Then the response HTTP status code should be 200
     And the JSON response should match:
-        """json
+        """JSON
         {
           "items": [
             {
@@ -232,7 +232,7 @@ Feature: In order to manage a collection of books
     Then the response HTTP status code should be 200
     And a client sends a "GET" request to "/books/8afeff05-af03-4ccd-922c-9d7c12cc2e28"
     And the JSON response should match:
-        """json
+        """JSON
         {
           "uuid": "8afeff05-af03-4ccd-922c-9d7c12cc2e28",
           "title": "The Histories - English edition with Latin text",
