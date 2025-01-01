@@ -9,6 +9,9 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(title: 'Page')]
 readonly class Page
 {
+    /**
+     * @var array<string|int, mixed> $items
+     */
     #[OA\Property(
         description: 'List of retrieved items',
         type: 'array',
