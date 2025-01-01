@@ -1,0 +1,33 @@
+name: Docker tests CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run docker compose services
+        run: |
+          cd docker
+          docker compose -f docker-compose.yml up -d
+
+      - name: Install dependencies
+        run: |
+          cd docker
+          docker compose -f docker-compose.yml exec -T php sh -c 'composer install'
+
+      - name: Check dependencies for vulnerabilities
+        run: |
+          cd docker
+          docker compose -f docker-compose.yml exec -T php sh -c 'composer audit'
+
+      - name: Lint and test
+        run: |
+          cd docker
+          docker compose -f docker-compose.yml exec -T php sh -c 'composer run ci'

@@ -1,100 +1,106 @@
 {
-    "type": "project",
-    "license": "proprietary",
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-    "require": {
-        "php": ">=8.2",
-        "ext-ctype": "*",
-        "ext-iconv": "*",
-        "doctrine/annotations": "^2.0",
-        "doctrine/dbal": "^3",
-        "doctrine/doctrine-bundle": "^2.13",
-        "doctrine/doctrine-migrations-bundle": "^3.3",
-        "doctrine/orm": "^3.3",
-        "symfony/console": "7.2.*",
-        "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
-        "symfony/framework-bundle": "7.2.*",
-        "symfony/monolog-bundle": "^3.10",
-        "symfony/runtime": "7.2.*",
-        "symfony/serializer": "7.2.*",
-        "symfony/uid": "7.2.*",
-        "symfony/validator": "7.2.*",
-        "symfony/yaml": "7.2.*"
+  "type": "project",
+  "license": "proprietary",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=8.2",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "doctrine/annotations": "^2.0",
+    "doctrine/dbal": "^3",
+    "doctrine/doctrine-bundle": "^2.13",
+    "doctrine/doctrine-migrations-bundle": "^3.3",
+    "doctrine/orm": "^3.3",
+    "symfony/console": "7.2.*",
+    "symfony/dotenv": "7.2.*",
+    "symfony/flex": "^2",
+    "symfony/framework-bundle": "7.2.*",
+    "symfony/monolog-bundle": "^3.10",
+    "symfony/runtime": "7.2.*",
+    "symfony/serializer": "7.2.*",
+    "symfony/uid": "7.2.*",
+    "symfony/validator": "7.2.*",
+    "symfony/yaml": "7.2.*"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true,
+      "symfony/flex": true,
+      "symfony/runtime": true
     },
-    "config": {
-        "allow-plugins": {
-            "php-http/discovery": true,
-            "symfony/flex": true,
-            "symfony/runtime": true
-        },
-        "bump-after-update": true,
-        "sort-packages": true
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\Tests\\": "tests/"
-        }
-    },
-    "replace": {
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php74": "*",
-        "symfony/polyfill-php80": "*",
-        "symfony/polyfill-php81": "*",
-        "symfony/polyfill-php82": "*"
-    },
-    "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ],
-        "unit-tests": "SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --exclude-group integration",
-        "functional-tests": "vendor/bin/behat -f progress",
-        "phpstan": "./vendor/bin/phpstan analyse -c phpstan.neon",
-        "fix-lint": "pint -v --repair",
-        "lint": "pint -v",
-        "quality": [
-            "@fix-lint",
-            "@phpstan"
-        ]
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "7.2.*",
-            "docker": false
-        }
-    },
-    "require-dev": {
-        "behat/behat": "^3.17",
-        "coduo/php-matcher": "^6.0",
-        "friends-of-behat/mink-browserkit-driver": "^1.6",
-        "friends-of-behat/symfony-extension": "^2.6",
-        "laravel/pint": "^1.19",
-        "phpstan/phpstan": "^2.1",
-        "phpstan/phpstan-phpunit": "^2.0",
-        "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "^11.5",
-        "soyuka/contexts": "^3.3",
-        "symfony/browser-kit": "7.2.*",
-        "symfony/phpunit-bridge": "^7.2"
+    "bump-after-update": true,
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "tests/"
+    }
+  },
+  "replace": {
+    "symfony/polyfill-ctype": "*",
+    "symfony/polyfill-iconv": "*",
+    "symfony/polyfill-php72": "*",
+    "symfony/polyfill-php73": "*",
+    "symfony/polyfill-php74": "*",
+    "symfony/polyfill-php80": "*",
+    "symfony/polyfill-php81": "*",
+    "symfony/polyfill-php82": "*"
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ],
+    "unit-tests": "SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --exclude-group integration",
+    "functional-tests": "vendor/bin/behat -f progress",
+    "phpstan": "./vendor/bin/phpstan analyse -c phpstan.neon",
+    "fix-lint": "pint -v --repair src tests migrations",
+    "lint": "pint -v src tests migrations",
+    "quality": [
+      "@fix-lint",
+      "@phpstan"
+    ],
+    "ci": [
+      "@lint",
+      "@phpstan",
+      "@unit-tests",
+      "@functional-tests"
+    ]
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "7.2.*",
+      "docker": false
+    }
+  },
+  "require-dev": {
+    "behat/behat": "^3.17",
+    "coduo/php-matcher": "^6.0",
+    "friends-of-behat/mink-browserkit-driver": "^1.6",
+    "friends-of-behat/symfony-extension": "^2.6",
+    "laravel/pint": "^1.19",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-phpunit": "^2.0",
+    "phpstan/phpstan-symfony": "^2.0",
+    "phpunit/phpunit": "^11.5",
+    "soyuka/contexts": "^3.3",
+    "symfony/browser-kit": "7.2.*",
+    "symfony/phpunit-bridge": "^7.2"
+  }
 }
