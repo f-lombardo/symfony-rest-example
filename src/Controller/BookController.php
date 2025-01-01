@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\BookCreateInput;
+use App\DTO\BookUpdateInput;
 use App\DTO\NewObjectOutput;
 use App\Entity\Book;
 use App\Repository\BookRepository;
@@ -89,16 +90,50 @@ class BookController extends AbstractController
     #[Route('/books/{uuid}', name: 'books_delete', requirements: ['uuid' => '^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$'], methods: ['DELETE'])]
     public function delete(string $uuid): Response
     {
-        $result = $this->bookRepository->find($uuid);
+        $book = $this->bookRepository->find($uuid);
 
-        if (!$result) {
+        if (!$book) {
             throw $this->createNotFoundException();
         }
 
-        $this->entityManager->remove($result);
+        $this->entityManager->remove($book);
         $this->entityManager->flush();
 
         return new Response(status: Response::HTTP_NO_CONTENT);
+    }
+
+    #[Route('/books/{uuid}', name: 'books_update', requirements: ['uuid' => '^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$'], methods: ['PUT'])]
+    public function update(Request $request, string $uuid): Response
+    {
+        $book = $this->bookRepository->find($uuid);
+
+        if (!$book) {
+            throw $this->createNotFoundException();
+        }
+
+        $content = $request->getContent();
+        $content = $this->serializer->deserialize($content, BookUpdateInput::class, 'json');
+        $violations = $this->validator->validate($content);
+        if (\count($violations) > 0) {
+            return $this->json($violations, Response::HTTP_BAD_REQUEST);
+        }
+
+        if (null !== $content->isbn) {
+            $book->isbn = $content->isbn;
+        }
+        if (null !== $content->title) {
+            $book->title = $content->title;
+        }
+        if (null !== $content->author) {
+            $book->author = $content->author;
+        }
+        if (null !== $content->publishedDate) {
+            $book->publishedDate = new \DateTimeImmutable($content->publishedDate);
+        }
+
+        $this->entityManager->flush();
+
+        return new Response(status: Response::HTTP_OK);
     }
 
     private function createJsonResponse(mixed $output, int $status = Response::HTTP_OK): JsonResponse
