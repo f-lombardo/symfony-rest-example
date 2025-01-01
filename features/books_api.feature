@@ -128,3 +128,22 @@ Feature: In order to manage a collection of books
     Scenario: It verifies uuid parameter
         When a client sends a "GET" request to "/books/not-an-uuid"
         Then the response HTTP status code should be 404
+
+    Scenario: It can create a new book
+        When a client sends a "POST" JSON request to "/books" with body:
+        """JSON
+        {
+          "title": "The Black Swan",
+          "author": "Nassim Nicholas Taleb",
+          "published_date": "2010-05-11",
+          "isbn": "978-0812973815"
+        }
+        """
+        Then the response HTTP status code should be 201
+        And the JSON response should match:
+        """json
+        {
+            "uuid": "@uuid@"
+        }
+        """
+        And table "book" should contain 6 records

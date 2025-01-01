@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Serializer;
 
-
-
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -31,12 +29,12 @@ readonly class ApplicationSerializer implements SerializerInterface
         );
     }
 
-    final public function serialize($data, string $format = 'json', array $context = []): string
+    final public function serialize(mixed $data, string $format = 'json', array $context = []): string
     {
         return $this->serializer->serialize($data, $format, $context);
     }
 
-    final public function deserialize($data, string $type, string $format = 'json', array $context = []): mixed
+    final public function deserialize(mixed $data, string $type, string $format = 'json', array $context = []): mixed
     {
         return $this->serializer->deserialize($data, $type, $format, $context);
     }

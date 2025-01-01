@@ -20,3 +20,6 @@ services:
             - '../src/Entity/'
             - '../src/Exceptions/'
             - '../src/Kernel.php'
+
+    App\Service\Page:
+        autoconfigure: false

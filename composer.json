@@ -64,7 +64,8 @@
             "@auto-scripts"
         ],
         "unit-tests": "SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --exclude-group integration",
-        "functional-tests": "vendor/bin/behat -f progress"
+        "functional-tests": "vendor/bin/behat -f progress",
+        "phpstan": "./vendor/bin/phpstan analyse -c phpstan.neon"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -81,6 +82,9 @@
         "coduo/php-matcher": "^6.0",
         "friends-of-behat/mink-browserkit-driver": "^1.6",
         "friends-of-behat/symfony-extension": "^2.6",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^11.5",
         "soyuka/contexts": "^3.3",
         "symfony/browser-kit": "7.2.*",

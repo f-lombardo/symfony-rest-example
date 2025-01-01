@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 final class BaseContext implements Context
 {
-    private ?Response $response;
+    private ?Response $response = null;
 
     public function __construct(private readonly KernelInterface $kernel, private readonly EntityManagerInterface $entityManager)
     {
@@ -35,6 +35,20 @@ final class BaseContext implements Context
     public function aClientSendsARequestTo(string $path, string $method): void
     {
         $this->response = $this->kernel->handle(Request::create($path, $method));
+    }
+
+    /**
+     * @When a client sends a :method JSON request to :path with body:
+     */
+    public function aClientSendsAJSONRequestTo(string $path, string $method, PyStringNode $body): void
+    {
+        $json = $body->getRaw();
+        if (!\json_validate($json)) {
+            Assert::fail(sprintf('JSON validation failed: %s', json_last_error_msg()));
+        }
+        $request = Request::create($path, $method, content: $json);
+        $request->headers->set('Content-Type', 'application/json');
+        $this->response = $this->kernel->handle($request);
     }
 
     /**
@@ -85,6 +99,19 @@ final class BaseContext implements Context
             $db->insert($tableName, $data);
         }
     }
+
+    /**
+     * @Then table :tableName should contain :expectedNrOfRecords records
+     */
+    public function tableShouldContainNRecords(string $tableName, int $expectedNrOfRecords): void
+    {
+        $db = $this->entityManager->getConnection();
+
+        $result = $db->executeQuery('Select count(*) from '.$tableName);
+        $actualNrOfRecords = $result->fetchOne();
+        Assert::assertEquals($expectedNrOfRecords, $actualNrOfRecords, "Table $tableName has $actualNrOfRecords records while it should contain $expectedNrOfRecords records");
+    }
+
 
     /**
      * @Then the JSON response should match:

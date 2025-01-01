@@ -39,12 +39,12 @@ class Book
     }
 
     #[ORM\Column(nullable: true)]
-    public ?\DateTimeImmutable $published_date = null {
+    public ?\DateTimeImmutable $publishedDate = null {
         get {
-            return $this->published_date;
+            return $this->publishedDate;
         }
         set {
-            $this->published_date = $value;
+            $this->publishedDate = $value;
         }
     }
 

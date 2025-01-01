@@ -2,10 +2,16 @@
 
 namespace App\DTO;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class BookCreateInput
 {
+    #[Assert\NotBlank(options: ['allowNull' => false])]
     public string $title;
+    #[Assert\NotBlank(options: ['allowNull' => false])]
     public string $author;
-    public ?string $published_date = null;
-    public ?string $isbn = null;
+    #[Assert\Date]
+    public ?string $publishedDate = null;
+    #[Assert\NotBlank(options: ['allowNull' => false])]
+    public string $isbn;
 }

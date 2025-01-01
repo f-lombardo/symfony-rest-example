@@ -5,13 +5,19 @@ namespace App\Service;
 use App\Transformer\Transformer;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Traversable;
 
 class PaginatorService
 {
-    public const ITEMS_PER_PAGE = 30;
-    public const MAX_ITEMS_PER_PAGE = 100;
+    public const int ITEMS_PER_PAGE = 30;
+    public const int MAX_ITEMS_PER_PAGE = 100;
 
-    public function paginate(QueryBuilder $queryBuilder, int $currentPage = 1, int $itemsPerPage = self::ITEMS_PER_PAGE, ?Transformer $transformer = null): array
+    /**
+     * @template T
+     * @template Q
+     * @param Transformer<T, Q>|null $transformer
+     */
+    public function paginate(QueryBuilder $queryBuilder, int $currentPage = 1, int $itemsPerPage = self::ITEMS_PER_PAGE, ?Transformer $transformer = null): Page
     {
         $this->checkValid($currentPage, $itemsPerPage);
 
@@ -24,19 +30,19 @@ class PaginatorService
         $totalItems = $paginator->count();
         $totalPages = (int) ceil($totalItems / $itemsPerPage);
 
-        $items = $paginator->getIterator()->getArrayCopy();
+        $items = \iterator_to_array($paginator->getIterator());
 
         if (null !== $transformer) {
             $items = \array_map(fn ($from) => $transformer->transform($from), $items);
         }
 
-        return [
-            'items' => $items,
-            'total_items' => $totalItems,
-            'total_pages' => $totalPages,
-            'current_page' => $currentPage,
-            'items_per_page' => $itemsPerPage,
-        ];
+        return new Page(
+            items: $items,
+            totalItems: $totalItems,
+            totalPages: $totalPages,
+            currentPage: $currentPage,
+            itemsPerPage: $itemsPerPage
+        );
     }
 
     public function checkValid(int $currentPage, int $itemsPerPage): void

@@ -7,10 +7,7 @@ FROM php:${PHP_VERSION}-fpm
 ARG TIMEZONE
 
 RUN apt-get update && apt-get install -y \
-    curl \
-    vim \
     openssl \
-    git \
     unzip \
     libzip-dev \
     libpq-dev \
@@ -36,8 +33,5 @@ RUN docker-php-ext-enable opcache
 
 COPY php-custom.ini /usr/local/etc/php/conf.d/docker-php-custom.ini
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
-# install yq
-RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 WORKDIR /var/www/symfony

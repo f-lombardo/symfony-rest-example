@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use App\DTO\BookCreateInput;
+use App\DTO\NewObjectOutput;
 use App\Entity\Book;
 use App\Repository\BookRepository;
 use App\Serializer\ApplicationSerializer;
 use App\Service\PaginatorService;
 use App\Transformer\BookOutputTransformer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function count;
@@ -19,6 +22,7 @@ class BookController extends AbstractController
 {
 
     public function __construct(
+        private readonly EntityManagerInterface $entityManager,
         private readonly BookRepository $bookRepository,
         private readonly PaginatorService $paginatorService,
         private readonly BookOutputTransformer $outputTransformer,
@@ -44,7 +48,7 @@ class BookController extends AbstractController
 
             return $this->createJsonResponse($paginatedData);
         } catch (\InvalidArgumentException $e) {
-           return $this->json($e->getMessage(), 400);
+           return $this->json($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -69,7 +73,7 @@ class BookController extends AbstractController
         $content = $this->serializer->deserialize($content, BookCreateInput::class, 'json');
         $violations = $this->validator->validate($content);
         if (count($violations) > 0) {
-            return $this->json($violations, 400);
+            return $this->json($violations, Response::HTTP_BAD_REQUEST);
         }
 
         $newBook = new Book();
@@ -77,12 +81,18 @@ class BookController extends AbstractController
         $newBook->isbn = $content->isbn;
         $newBook->title = $content->title;
         $newBook->author = $content->author;
-        $newBook->publishedDate = $content->publishedDate;
+        if (null !== $content->publishedDate) {
+            $newBook->publishedDate = new \DateTimeImmutable($content->publishedDate);
+        }
 
+        $this->entityManager->persist($newBook);
+        $this->entityManager->flush();
+
+        return $this->createJsonResponse(new NewObjectOutput($newBook->uuid), Response::HTTP_CREATED);
     }
 
-    public function createJsonResponse(mixed $output): JsonResponse
+    private function createJsonResponse(mixed $output, int $status = Response::HTTP_OK): JsonResponse
     {
-        return new JsonResponse(data: $this->serializer->serialize($output, 'json'), json: true);
+        return new JsonResponse(data: $this->serializer->serialize($output, 'json'), status: $status, json: true);
     }
 }
