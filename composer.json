@@ -95,7 +95,7 @@
     "coduo/php-matcher": "^6.0",
     "friends-of-behat/mink-browserkit-driver": "^1.6",
     "friends-of-behat/symfony-extension": "^2.6",
-    "laravel/pint": "^1.19",
+    "laravel/pint": "^1.20",
     "phpstan/phpstan": "^2.1",
     "phpstan/phpstan-phpunit": "^2.0",
     "phpstan/phpstan-symfony": "^2.0",
