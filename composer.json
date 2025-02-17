@@ -91,7 +91,7 @@
     }
   },
   "require-dev": {
-    "behat/behat": "^3.18",
+    "behat/behat": "^3.19",
     "coduo/php-matcher": "^6.0",
     "friends-of-behat/mink-browserkit-driver": "^1.6",
     "friends-of-behat/symfony-extension": "^2.6",
