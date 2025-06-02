@@ -14,48 +14,48 @@ class Book
     #[ORM\Column(type: 'uuid', nullable: false)]
     public Uuid $uuid {
         get {
-        return $this->uuid;
-    }
+            return $this->uuid;
+        }
     }
 
     #[ORM\Column(type: Types::TEXT, nullable: false)]
     public string $title {
         get {
-        return $this->title;
-    }
-    set {
-        $this->title = $value;
-    }
+            return $this->title;
+        }
+        set {
+            $this->title = $value;
+        }
     }
 
     #[ORM\Column(type: Types::TEXT, nullable: false)]
     public string $author {
         get {
-        return $this->author;
-    }
-    set {
-        $this->author = $value;
-    }
+            return $this->author;
+        }
+        set {
+            $this->author = $value;
+        }
     }
 
     #[ORM\Column(nullable: false)]
     public \DateTimeImmutable $publishedDate {
         get {
-        return $this->publishedDate;
-    }
-    set {
-        $this->publishedDate = $value;
-    }
+            return $this->publishedDate;
+        }
+        set {
+            $this->publishedDate = $value;
+        }
     }
 
     #[ORM\Column(length: 17, nullable: false)]
     public string $isbn {
         get {
-        return $this->isbn;
-    }
-    set {
-        $this->isbn = $value;
-    }
+            return $this->isbn;
+        }
+        set {
+            $this->isbn = $value;
+        }
     }
 
     public function __construct(?string $uuidString = null)

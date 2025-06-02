@@ -94,6 +94,10 @@ final class BaseContext implements Context
         $rows = $table->getRows();
         $columns = \array_shift($rows);
 
+        if (null === $columns) {
+            return;
+        }
+
         foreach ($rows as $row) {
             $data = \array_combine($columns, \array_map(fn ($field) => '@null@' === $field ? null : $field, $row));
             $db->insert($tableName, $data);
